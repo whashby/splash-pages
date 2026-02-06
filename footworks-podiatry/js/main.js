@@ -1,16 +1,36 @@
-// Enable button only when terms are accepted
+// Terms acceptance
 const checkbox = document.getElementById('acceptTerms');
 const btn = document.getElementById('continueBtn');
+const fbSection = document.getElementById('fbSection');
 
 checkbox.addEventListener('change', () => {
   btn.disabled = !checkbox.checked;
 });
 
-// On click, send user onward
-btn.addEventListener('click', () => {
-  // Many controllers append a ?redir= or similar parameter.
-  const params = new URLSearchParams(window.location.search);
-  const redir = params.get('redir') || params.get('url') || 'https://www.google.com';
+// Auto-close Facebook section after interaction
+fbSection.addEventListener('click', () => {
+  fbSection.classList.add('closed');
+});
 
-  window.location.href = redir;
+// Extract redirect URL from Linksys Cloud Manager
+function getRedirectURL() {
+  const params = new URLSearchParams(window.location.search);
+
+  // Linksys Cloud Manager commonly uses these
+  const keys = ["redirect", "redir", "url", "continue"];
+
+  for (const key of keys) {
+    if (params.has(key)) {
+      return params.get(key);
+    }
+  }
+
+  // Fallback if controller didn't pass anything
+  return "http://neverssl.com";
+}
+
+// Continue button logic
+btn.addEventListener('click', () => {
+  const redirectURL = getRedirectURL();
+  window.location.href = redirectURL;
 });
