@@ -12,6 +12,25 @@ fbSection.addEventListener('click', () => {
   fbSection.classList.add('closed');
 });
 
+
+// --- DEBUG: Alert all detected query parameters ---
+(function alertAllParams() {
+  const params = new URLSearchParams(window.location.search);
+
+  if ([...params].length > 0) {
+    let message = "Detected parameters:\n\n";
+    params.forEach((value, key) => {
+      message += `${key}: ${value}\n`;
+    });
+    alert(message);
+  } else {
+    alert("No parameters detected.");
+  }
+})();
+
+
+
+
 // Extract redirect URL from Linksys Cloud Manager
 function getRedirectURL() {
   const params = new URLSearchParams(window.location.search);
