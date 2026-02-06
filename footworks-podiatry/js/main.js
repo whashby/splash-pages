@@ -4,7 +4,7 @@
 function getRedirectURL() {
   const params = new URLSearchParams(window.location.search);
 
-  const keys = ["redirect", "redir", "url", "continue"];
+  const keys = ["redirect", "redir", "login_url", "continue"];
 
   for (const key of keys) {
     if (params.has(key)) {
