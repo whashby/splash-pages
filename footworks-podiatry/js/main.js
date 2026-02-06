@@ -4,7 +4,6 @@
 function getRedirectURL() {
   const params = new URLSearchParams(window.location.search);
 
-  // Common Linksys redirect keys
   const keys = ["redirect", "redir", "url", "continue"];
 
   for (const key of keys) {
@@ -13,13 +12,12 @@ function getRedirectURL() {
     }
   }
 
-  // Fallback if controller didn't pass anything
   return "http://neverssl.com";
 }
 
 
 // ---------------------------------------------------------
-// Extract login_url and client_mac (if provided)
+// Extract login_url and client_mac
 // ---------------------------------------------------------
 function getControllerInfo() {
   const params = new URLSearchParams(window.location.search);
@@ -34,30 +32,32 @@ const controllerInfo = getControllerInfo();
 
 
 // ---------------------------------------------------------
-// Build final redirect URL with client_mac appended
+// Build final redirect URL WITHOUT breaking Linksys flow
 // ---------------------------------------------------------
 function buildFinalRedirectURL() {
-  const baseRedirect = getRedirectURL();
+  const base = getRedirectURL();
   const mac = controllerInfo.client_mac;
 
-  // If no MAC is provided, return the base redirect untouched
-  if (!mac) {
-    return baseRedirect;
+  // If no MAC, return untouched
+  if (!mac) return base;
+
+  // If redirect URL already has parameters, append safely
+  if (base.includes("?")) {
+    const url = new URL(base);
+    url.searchParams.set("client_mac", mac);
+    return url.toString();
   }
 
-  // Append client_mac safely, preserving existing parameters
-  const url = new URL(baseRedirect, window.location.origin);
-  url.searchParams.set("client_mac", mac);
-
-  return url.toString();
+  // If redirect URL has NO parameters, DO NOT append anything
+  // (Linksys will reject modified URLs and loop the splash)
+  return base;
 }
 
 
 // ---------------------------------------------------------
-// Auto-close Facebook section after interaction
+// Auto-close Facebook section
 // ---------------------------------------------------------
 const fbSection = document.getElementById('fbSection');
-
 if (fbSection) {
   fbSection.addEventListener('click', () => {
     fbSection.classList.add('closed');
@@ -66,7 +66,7 @@ if (fbSection) {
 
 
 // ---------------------------------------------------------
-// Terms acceptance logic
+// Terms acceptance
 // ---------------------------------------------------------
 const checkbox = document.getElementById('acceptTerms');
 const btn = document.getElementById('continueBtn');
@@ -77,7 +77,7 @@ checkbox.addEventListener('change', () => {
 
 
 // ---------------------------------------------------------
-// Continue button logic (returns control to Linksys)
+// Continue button logic
 // ---------------------------------------------------------
 btn.addEventListener('click', () => {
   const finalURL = buildFinalRedirectURL();
