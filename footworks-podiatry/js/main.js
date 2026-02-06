@@ -80,6 +80,7 @@ checkbox.addEventListener('change', () => {
 // Continue button logic
 // ---------------------------------------------------------
 btn.addEventListener('click', () => {
-  const finalURL = buildFinalRedirectURL();
+  //const finalURL = buildFinalRedirectURL();
+  const finalURL = "https://www.facebook.com/FootworksPodiatry1/";
   window.location.href = finalURL;
 });
