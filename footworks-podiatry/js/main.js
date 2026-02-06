@@ -31,8 +31,26 @@ function getControllerInfo() {
 }
 
 const controllerInfo = getControllerInfo();
-// controllerInfo.login_url
-// controllerInfo.client_mac
+
+
+// ---------------------------------------------------------
+// Build final redirect URL with client_mac appended
+// ---------------------------------------------------------
+function buildFinalRedirectURL() {
+  const baseRedirect = getRedirectURL();
+  const mac = controllerInfo.client_mac;
+
+  // If no MAC is provided, return the base redirect untouched
+  if (!mac) {
+    return baseRedirect;
+  }
+
+  // Append client_mac safely, preserving existing parameters
+  const url = new URL(baseRedirect, window.location.origin);
+  url.searchParams.set("client_mac", mac);
+
+  return url.toString();
+}
 
 
 // ---------------------------------------------------------
@@ -62,6 +80,6 @@ checkbox.addEventListener('change', () => {
 // Continue button logic (returns control to Linksys)
 // ---------------------------------------------------------
 btn.addEventListener('click', () => {
-  const redirectURL = getRedirectURL();
-  window.location.href = redirectURL;
+  const finalURL = buildFinalRedirectURL();
+  window.location.href = finalURL;
 });
