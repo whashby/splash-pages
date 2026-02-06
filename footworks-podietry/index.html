@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Footworks Guest Wi‑Fi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #f7f7f7;
+      color: #333;
+    }
+    .container {
+      max-width: 420px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    img.logo {
+      width: 160px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <img src="img/logo_20260206_051504.png" class="logo" alt="Footworks Logo">
+
+  <h2>Welcome to Footworks Guest Wi‑Fi</h2>
+  <p>Before you continue, feel free to check in on Facebook.</p>
+
+  <!-- Facebook SDK -->
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v17.0">
+  </script>
+
+  <!-- Facebook Check-In Button -->
+  <div class="fb-checkin"
+       data-href="https://www.facebook.com/FootworksPodiatry1/"
+       data-size="large">
+  </div>
+
+  <p style="margin-top:20px;">Tap the button above to check in.</p>
+</div>
+
+</body>
+</html>
